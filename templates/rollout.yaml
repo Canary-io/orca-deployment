@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "service-chart.name" . }}
+  namespace: argo-rollouts
+
+spec:
+  replicas: 4
+
+  selector:
+    matchLabels:
+      app: {{ include "service-chart.name" . }}
+
+  template:
+    metadata:
+      labels:
+        app: {{ include "service-chart.name" . }}
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-creds-secret
+
+      containers:
+        - name: {{ include "service-chart.name" . }}
+          image: ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 8080
+
+  strategy:
+    canary:
+      canaryService: {{ include "service-chart.name" . }}-canary
+      stableService: {{ include "service-chart.name" . }}-stable
+
+      trafficRouting:
+        nginx:
+          stableIngress: {{ include "service-chart.name" . }}-ingress
+
+      steps:
+        - setWeight: 25
+        - pause: {}
+        - analysis:
+            templates:
+              - templateName: success-rate
+
+        - setWeight: 50
+        - pause: {}
+        - analysis:
+            templates:
+              - templateName: success-rate
+
+        - setWeight: 75
+        - pause: {}
+        - analysis:
+            templates:
+              - templateName: success-rate
+
+        - setWeight: 100
