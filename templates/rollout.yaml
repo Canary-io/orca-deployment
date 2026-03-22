@@ -35,13 +35,10 @@ spec:
           stableIngress: {{ include "service-chart.name" . }}-ingress
 
       steps:
-        - setWeight: 25
-        - pause: {}
-
-        - setWeight: 50
-        - pause: {}
-
-        - setWeight: 75
-        - pause: {}
-
-        - setWeight: 100
+        {{- $steps := .Values.rollout.steps }}
+        {{- range $i, $w := $steps }}
+          - setWeight: {{ $w }}
+          {{- if ne $i (sub (len $steps) 1) }}
+          - pause: {}
+          {{- end }}
+        {{- end }}

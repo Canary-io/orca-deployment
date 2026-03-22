@@ -4,7 +4,7 @@ image:
   name: ""
   tag: ""
   imagePullSecret: ""
-  
+
 securityContext: {}
 
 service:
@@ -22,3 +22,6 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+
+rollout:
+  steps: [25, 50, 75, 100]
