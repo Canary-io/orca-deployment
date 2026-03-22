@@ -17,11 +17,11 @@ spec:
         app: {{ include "service-chart.name" . }}
     spec:
       imagePullSecrets:
-        - name: docker-registry-creds-secret
+        - name: {{ .Values.image.imagePullSecret }}
 
       containers:
         - name: {{ include "service-chart.name" . }}
-          image: ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          image: "ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 8080
 
@@ -37,20 +37,11 @@ spec:
       steps:
         - setWeight: 25
         - pause: {}
-        - analysis:
-            templates:
-              - templateName: success-rate
 
         - setWeight: 50
         - pause: {}
-        - analysis:
-            templates:
-              - templateName: success-rate
 
         - setWeight: 75
         - pause: {}
-        - analysis:
-            templates:
-              - templateName: success-rate
 
         - setWeight: 100

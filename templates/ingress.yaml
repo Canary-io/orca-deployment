@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "service-chart.name" . }}
+  name: {{ include "service-chart.name" . }}-ingress
   namespace: argo-rollouts
 spec:
   ingressClassName: nginx

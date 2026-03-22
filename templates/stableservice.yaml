@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "service-chart.name" . }}-stable
+  name: {{ include "service-chart.stableServiceName" . }}
   namespace: argo-rollouts
   labels:
     {{- include "service-chart.labels" . | nindent 4 }}
