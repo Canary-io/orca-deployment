@@ -1,0 +1,28 @@
+{{- if .Values.rollout.bluegreen.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "service-chart.name" . }}
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "service-chart.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "service-chart.name" . }}
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen: 
+      activeService: {{ include "service-chart.name" . }}-active
+      previewService: {{ include "service-chart.name" . }}-preview
+      autoPromotionEnabled: false
+{{- end }}

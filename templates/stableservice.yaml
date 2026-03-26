@@ -1,3 +1,4 @@
+{{- if .Values.rollout.canary.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,3 +12,4 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
+{{- end }}

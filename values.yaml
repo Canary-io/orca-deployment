@@ -24,4 +24,8 @@ readinessProbe:
     port: http
 
 rollout:
-  steps: [25, 50, 75, 100]
+  canary:
+    enabled: false
+    steps: [25, 50, 75, 100]
+  bluegreen:
+    enabled: false

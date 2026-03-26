@@ -1,3 +1,4 @@
+{{- if .Values.rollout.canary.enabled -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -35,10 +36,11 @@ spec:
           stableIngress: {{ include "service-chart.name" . }}-ingress
 
       steps:
-        {{- $steps := .Values.rollout.steps }}
+        {{- $steps := .Values.rollout.canary.steps }}
         {{- range $i, $w := $steps }}
           - setWeight: {{ $w }}
           {{- if ne $i (sub (len $steps) 1) }}
           - pause: {}
           {{- end }}
         {{- end }}
+{{- end}}
