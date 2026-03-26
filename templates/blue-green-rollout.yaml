@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: {{ include "service-chart.name" . }}
+  namespace: argo-rollouts
 spec:
   replicas: 2
   revisionHistoryLimit: 2
