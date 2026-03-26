@@ -16,8 +16,8 @@ spec:
         app: {{ include "service-chart.name" . }}
     spec:
       containers:
-      - name: rollouts-demo
-        image: argoproj/rollouts-demo:blue
+      - name:  {{ include "service-chart.name" . }}
+        image:  "ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
