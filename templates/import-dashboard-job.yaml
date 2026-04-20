@@ -1,8 +1,9 @@
+{{- if .Values.grafanaImportJob.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: dashboard-import
-  namespace: monitoring
+  namespace: {{ .Values.grafanaImportJob.namespace }}
 spec:
   template:
     spec:
@@ -13,18 +14,21 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              curl -sS -X POST "http://prometheus-grafana.monitoring.svc.cluster.local/api/dashboards/db" \
+              curl -sS -X POST "{{ .Values.grafanaImportJob.grafanaUrl }}/api/dashboards/db" \
                 -H "Content-Type: application/json" \
                 -u "$GRAFANA_USER:$GRAFANA_PASSWORD" \
                 --data-binary @/dashboard/dashboard.json
           env:
             - name: GRAFANA_USER
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.grafanaImportJob.credentialsSecret.name }}
+                  key: {{ .Values.grafanaImportJob.credentialsSecret.usernameKey }}
             - name: GRAFANA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: prometheus-grafana
-                  key: admin-password
+                  name: {{ .Values.grafanaImportJob.credentialsSecret.name }}
+                  key: {{ .Values.grafanaImportJob.credentialsSecret.passwordKey }}
           volumeMounts:
             - name: dashboard
               mountPath: /dashboard
@@ -32,3 +36,4 @@ spec:
         - name: dashboard
           configMap:
             name: dashboard-json
+{{- end }}

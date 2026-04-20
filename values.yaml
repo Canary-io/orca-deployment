@@ -37,3 +37,15 @@ grafanaDashboard:
   labels: {}
   instanceSelector:
     matchLabels: {}
+
+grafanaImportJob:
+  enabled: false
+  namespace: monitoring
+  grafanaUrl: http://prometheus-grafana.monitoring.svc.cluster.local
+  credentialsSecret:
+    create: false
+    name: grafana-import-credentials
+    usernameKey: username
+    passwordKey: password
+    username: admin
+    password: ""

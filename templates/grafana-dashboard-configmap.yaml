@@ -8,7 +8,164 @@ data:
     {
       "dashboard": {
         "id": null,
-        "title": "Canary Metrics"
+        "title": "{{ .Values.image.name }} Metrics",
+        "tags": ["canary", "argo-rollouts", "nginx"],
+        "timezone": "browser",
+        "schemaVersion": 36,
+        "version": 0,
+        "refresh": "30s",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Healthy NGINX Targets",
+            "type": "stat",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum(nginx_up{namespace=\"argo-rollouts\"})",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 }
+          },
+          {
+            "id": 2,
+            "title": "Namespace Request Rate",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum(rate(nginx_http_requests_total{namespace=\"argo-rollouts\"}[2m]))",
+                "legendFormat": "requests/sec",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 18, "x": 6, "y": 0 }
+          },
+          {
+            "id": 3,
+            "title": "Requests by Pod",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "rate(nginx_http_requests_total{namespace=\"argo-rollouts\"}[2m])",
+                "legendFormat": "{{`{{pod}}`}}",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 }
+          },
+          {
+            "id": 4,
+            "title": "Active Connections by Pod",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "nginx_connections_active{namespace=\"argo-rollouts\"}",
+                "legendFormat": "{{`{{pod}}`}}",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 }
+          },
+          {
+            "id": 5,
+            "title": "Container Restarts",
+            "type": "stat",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"argo-rollouts\"})",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 }
+          },
+          {
+            "id": 6,
+            "title": "Ready Containers",
+            "type": "stat",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum(kube_pod_container_status_ready{namespace=\"argo-rollouts\"} == 1)",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 6, "x": 6, "y": 16 }
+          },
+          {
+            "id": 7,
+            "title": "Memory Working Set by Pod",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"argo-rollouts\",container!=\"\",image!=\"\"})",
+                "legendFormat": "{{`{{pod}}`}}",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 }
+          },
+          {
+            "id": 8,
+            "title": "CPU Usage by Pod",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"argo-rollouts\",container!=\"\",image!=\"\"}[2m]))",
+                "legendFormat": "{{`{{pod}}`}}",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 }
+          },
+          {
+            "id": 9,
+            "title": "Scrape Health by Pod",
+            "type": "timeseries",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "up{namespace=\"argo-rollouts\"}",
+                "legendFormat": "{{`{{job}} {{pod}}`}}",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 }
+          }
+        ]
       },
       "overwrite": true
     }
