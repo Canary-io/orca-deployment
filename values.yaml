@@ -32,6 +32,7 @@ rollout:
 
 grafanaDashboard:
   enabled: false
+  apiVersion: ""
   folder: ""
   labels: {}
   instanceSelector:
