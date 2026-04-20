@@ -26,6 +26,13 @@ readinessProbe:
 rollout:
   canary:
     enabled: false
-    steps: [25, 50, 75, 100]
+    steps: [25, 40, 75, 100]
   bluegreen:
     enabled: false
+
+grafanaDashboard:
+  enabled: false
+  folder: ""
+  labels: {}
+  instanceSelector:
+    matchLabels: {}
