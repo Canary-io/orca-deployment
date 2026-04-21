@@ -16,7 +16,7 @@ jobs:
     env:
       CHART_DIR: .
       REGISTRY: ghcr.io
-      REGISTRY_REPOSITORY: ghcr.io/${{ github.repository_owner }}/charts
+      REGISTRY_REPOSITORY: ghcr.io/josephjophy/charts
 
     steps:
       - name: Checkout repository
