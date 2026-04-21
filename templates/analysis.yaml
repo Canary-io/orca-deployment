@@ -17,5 +17,7 @@ spec:
         prometheus:
           address: http://prometheus-operated.monitoring.svc.cluster.local:9090
           query: |
-            nginx_up{namespace="argo-rollouts"}
+            sum(rate(nginx_http_requests_total{service="{{`{{ args.service-name }}`}}",status!~"5.."}[2m]))
+            /
+            sum(rate(nginx_http_requests_total{service="{{`{{ args.service-name }}`}}"}[2m]))
 {{- end -}}

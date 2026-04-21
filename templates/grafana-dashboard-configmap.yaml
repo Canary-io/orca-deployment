@@ -8,6 +8,7 @@ data:
     {
       "dashboard": {
         "id": null,
+        "uid": "{{ printf "%s-metrics" .Values.image.name | lower | replace "_" "-" | trunc 40 | trimSuffix "-" }}",
         "title": "{{ .Values.image.name }} Metrics",
         "tags": ["canary", "argo-rollouts", "nginx"],
         "timezone": "browser",
