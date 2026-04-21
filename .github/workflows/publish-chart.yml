@@ -32,7 +32,7 @@ jobs:
         run: helm package "${CHART_DIR}" --destination packaged-chart
 
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login "${REGISTRY}" --username "${{ github.actor }}" --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | helm registry login "${REGISTRY}" --username "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
       - name: Push chart to registry
         run: helm push packaged-chart/*.tgz "oci://${REGISTRY_REPOSITORY}"
