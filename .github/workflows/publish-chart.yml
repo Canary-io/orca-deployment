@@ -16,7 +16,7 @@ jobs:
     env:
       CHART_DIR: .
       REGISTRY: ghcr.io
-      REGISTRY_REPOSITORY: ghcr.io/josephjophy/charts
+      REGISTRY_REPOSITORY: ghcr.io/canary-io/charts
 
     steps:
       - name: Checkout repository
