@@ -24,7 +24,7 @@ spec:
 
       containers:
         - name: {{ include "service-chart.name" . }}
-          image: "ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          image: "{{ include "service-chart.image" . }}"
           ports:
             - name: http
               containerPort: 8080

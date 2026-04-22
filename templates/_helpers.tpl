@@ -6,6 +6,13 @@
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "service-chart.image" -}}
+{{- if .Values.image.repository -}}
+{{- printf "%s:%s" .Values.image.repository .Values.image.tag -}}
+{{- else -}}
+{{- printf "%s/%s/%s:%s" .Values.image.registry .Values.image.owner .Values.image.name .Values.image.tag -}}
+{{- end -}}
+{{- end }}
 
 {{- define "service-chart.canaryServiceName" -}}
 {{- $name := default "app" (include "service-chart.name" .) -}}

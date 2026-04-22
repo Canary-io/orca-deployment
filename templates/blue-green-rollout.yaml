@@ -19,9 +19,13 @@ spec:
       prometheus.io/port: "8080"
       prometheus.io/path: "/metrics"
     spec:
+      {{- if .Values.image.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecret }}
+      {{- end }}
       containers:
       - name:  {{ include "service-chart.name" . }}
-        image:  "ghcr.io/canary-io/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        image:  "{{ include "service-chart.image" . }}"
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

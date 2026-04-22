@@ -1,6 +1,9 @@
 replicaCount: 1
 
 image:
+  repository: ""
+  registry: ghcr.io
+  owner: canary-io
   name: ""
   tag: ""
   imagePullSecret: ""
