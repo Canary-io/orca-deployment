@@ -1,1 +1,1 @@
-Congratulations your release has been deployed
+Congratulations your release has been deployed!
