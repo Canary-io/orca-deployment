@@ -4,9 +4,9 @@ metadata:
   name: {{ include "service-chart.name" . }}-ingress
   namespace: argo-rollouts
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
   rules:
-  - host: orca.{{ include "service-chart.name" . }}.com
+  - host: {{ include "service-chart.ingressHost" . }}
     http:
       paths:
       - path: /

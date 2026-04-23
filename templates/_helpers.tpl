@@ -37,3 +37,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ include "service-chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "service-chart.ingressHost" -}}
+{{- if .Values.ingress.host -}}
+{{- .Values.ingress.host -}}
+{{- else -}}
+{{- printf "%s.%s" .Release.Name .Values.ingress.domain -}}
+{{- end -}}
+{{- end }}

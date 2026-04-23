@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: dashboard-import
+  name: {{ include "service-chart.name" . }}-dashboard-import
   namespace: {{ .Values.grafanaImportJob.namespace }}
 spec:
   template:
