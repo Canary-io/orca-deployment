@@ -67,13 +67,15 @@ spec:
         {{- $steps := .Values.rollout.canary.steps }}
         {{- range $i, $w := $steps }}
           - setWeight: {{ $w }}
-          {{- if ne $i (sub (len $steps) 1) }}
+          {{- if and $.Values.rollout.canary.analysis.enabled (ne $i (sub (len $steps) 1)) }}
           - analysis:
               templates:
                 - templateName: {{ include "service-chart.name" $ }}-success-rate
               args:
                 - name: service-name
                   value: {{ include "service-chart.canaryServiceName" $ }}
+          - pause: {}
+          {{- else if ne $i (sub (len $steps) 1) }}
           - pause: {}
           {{- end }}
         {{- end }}

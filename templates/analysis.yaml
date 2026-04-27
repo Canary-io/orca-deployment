@@ -1,4 +1,4 @@
-{{- if .Values.rollout.canary.enabled -}}
+{{- if and .Values.rollout.canary.enabled .Values.rollout.canary.analysis.enabled -}}
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:

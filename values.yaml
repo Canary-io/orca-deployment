@@ -36,6 +36,8 @@ readinessProbe:
 rollout:
   canary:
     enabled: false
+    analysis:
+      enabled: false
     steps: [25, 40, 75, 100]
   bluegreen:
     enabled: false
