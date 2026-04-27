@@ -13,11 +13,13 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
+  targetPort: proxy
 
 ingress:
   className: nginx
   host: ""
   domain: apps.local
+  annotations: {}
 
 resources: {}
 
