@@ -1,5 +1,5 @@
 {{- define "service-chart.name" -}}
-{{- default .Chart.Name .Values.image.name | trunc 63 | trimSuffix "-" }}
+{{- default .Release.Name .Values.image.name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "service-chart.chart" -}}
