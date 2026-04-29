@@ -1,0 +1,29 @@
+{{- if and .Values.metrics.enabled (or .Values.rollout.canary.enabled .Values.rollout.bluegreen.enabled) -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "service-chart.name" . }}-metrics-ingress
+  namespace: argo-rollouts
+  {{- if or .Values.ingress.annotations .Values.metrics.annotations }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.metrics.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ include "service-chart.metricsHost" . }}
+      http:
+        paths:
+          - path: {{ .Values.metrics.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "service-chart.metricsServiceName" . }}
+                port:
+                  name: metrics
+{{- end }}

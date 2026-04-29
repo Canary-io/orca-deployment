@@ -3,12 +3,14 @@ kind: ConfigMap
 metadata:
   name: {{ include "service-chart.name" . }}-dashboard-json
   namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
 data:
   dashboard.json: |
     {
       "dashboard": {
         "id": null,
-        "uid": "{{ printf "%s-metrics" .Values.image.name | lower | replace "_" "-" | trunc 40 | trimSuffix "-" }}",
+        "uid": "{{ include "service-chart.grafanaDashboardUid" . }}",
         "title": "{{ .Values.image.name }} Metrics",
         "tags": ["canary", "argo-rollouts", "nginx"],
         "timezone": "browser",

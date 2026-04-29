@@ -1,0 +1,29 @@
+{{- if and .Values.grafanaDashboard.ingress.enabled (eq (include "service-chart.shouldCreateGrafanaIngress" .) "true") -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "service-chart.name" . }}-grafana-ingress
+  namespace: argo-rollouts
+  {{- if or .Values.ingress.annotations .Values.grafanaDashboard.ingress.annotations }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.grafanaDashboard.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ include "service-chart.grafanaHost" . }}
+      http:
+        paths:
+          - path: {{ .Values.grafanaDashboard.ingress.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "service-chart.name" . }}-grafana
+                port:
+                  name: http
+{{- end }}

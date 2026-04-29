@@ -1,0 +1,21 @@
+{{- if and .Values.metrics.enabled (or .Values.rollout.canary.enabled .Values.rollout.bluegreen.enabled) -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service-chart.metricsServiceName" . }}
+  namespace: argo-rollouts
+  labels:
+    {{- include "service-chart.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ include "service-chart.name" . }}
+  ports:
+    - name: metrics
+      {{- if .Values.rollout.canary.enabled }}
+      port: 9114
+      targetPort: metrics
+      {{- else if .Values.rollout.bluegreen.enabled }}
+      port: 8080
+      targetPort: 8080
+      {{- end }}
+{{- end }}

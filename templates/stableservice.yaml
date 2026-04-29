@@ -10,6 +10,10 @@ spec:
   selector:
     app: {{ include "service-chart.name" . }}
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: {{ .Values.service.targetPort }}
+    - name: metrics
+      port: 9114
+      targetPort: metrics
 {{- end }}

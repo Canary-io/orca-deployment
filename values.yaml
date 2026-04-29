@@ -21,6 +21,12 @@ ingress:
   domain: orcademo.com
   annotations: {}
 
+metrics:
+  enabled: true
+  host: ""
+  path: /metrics
+  annotations: {}
+
 resources: {}
 
 
@@ -49,6 +55,15 @@ grafanaDashboard:
   labels: {}
   instanceSelector:
     matchLabels: {}
+  ingress:
+    enabled: true
+    host: ""
+    path: /
+    annotations: {}
+  service:
+    name: prometheus-grafana
+    namespace: monitoring
+    port: 80
 
 grafanaImportJob:
   enabled: false

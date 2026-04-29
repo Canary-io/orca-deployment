@@ -1,0 +1,15 @@
+{{- if .Values.grafanaDashboard.ingress.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service-chart.name" . }}-grafana
+  namespace: argo-rollouts
+  labels:
+    {{- include "service-chart.labels" . | nindent 4 }}
+spec:
+  type: ExternalName
+  externalName: {{ printf "%s.%s.svc.cluster.local" .Values.grafanaDashboard.service.name .Values.grafanaDashboard.service.namespace }}
+  ports:
+    - name: http
+      port: {{ .Values.grafanaDashboard.service.port }}
+{{- end }}

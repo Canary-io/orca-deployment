@@ -1,3 +1,9 @@
 Congratulations your release has been deployed!
 
 Application URL: http://{{ include "service-chart.ingressHost" . }}
+{{- if .Values.metrics.enabled }}
+Metrics URL: http://{{ include "service-chart.metricsHost" . }}{{ .Values.metrics.path }}
+{{- end }}
+{{- if .Values.grafanaDashboard.ingress.enabled }}
+Grafana URL: http://{{ include "service-chart.grafanaHost" . }}/d/{{ include "service-chart.grafanaDashboardUid" . }}/{{ include "service-chart.grafanaDashboardUid" . }}
+{{- end }}
