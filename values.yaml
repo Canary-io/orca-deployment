@@ -70,7 +70,7 @@ grafanaImportJob:
   namespace: monitoring
   grafanaUrl: http://prometheus-stack-grafana.monitoring.svc.cluster.local
   credentialsSecret:
-    create: true
+    create: false
     name: grafana-import-credentials
     usernameKey: username
     passwordKey: password
