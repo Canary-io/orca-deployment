@@ -1,3 +1,4 @@
+{{- $releaseName := include "service-chart.name" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,7 +29,7 @@ data:
             },
             "targets": [
               {
-                "expr": "sum(nginx_up{namespace=\"argo-rollouts\"})",
+                "expr": "sum(nginx_up{job=\"monitoring/{{ $releaseName }}\"})",
                 "refId": "A"
               }
             ],
@@ -36,7 +37,7 @@ data:
           },
           {
             "id": 2,
-            "title": "Namespace Request Rate",
+            "title": "Request Rate",
             "type": "timeseries",
             "datasource": {
               "type": "prometheus",
@@ -44,7 +45,7 @@ data:
             },
             "targets": [
               {
-                "expr": "sum(rate(nginx_http_requests_total{namespace=\"argo-rollouts\"}[2m]))",
+                "expr": "sum(rate(nginx_http_requests_total{job=\"monitoring/{{ $releaseName }}\"}[2m]))",
                 "legendFormat": "requests/sec",
                 "refId": "A"
               }
@@ -61,7 +62,7 @@ data:
             },
             "targets": [
               {
-                "expr": "rate(nginx_http_requests_total{namespace=\"argo-rollouts\"}[2m])",
+                "expr": "sum by (pod) (rate(nginx_http_requests_total{job=\"monitoring/{{ $releaseName }}\"}[2m]))",
                 "legendFormat": "{{`{{pod}}`}}",
                 "refId": "A"
               }
@@ -78,7 +79,7 @@ data:
             },
             "targets": [
               {
-                "expr": "nginx_connections_active{namespace=\"argo-rollouts\"}",
+                "expr": "sum by (pod) (nginx_connections_active{job=\"monitoring/{{ $releaseName }}\"})",
                 "legendFormat": "{{`{{pod}}`}}",
                 "refId": "A"
               }
@@ -87,6 +88,22 @@ data:
           },
           {
             "id": 5,
+            "title": "Ready Pods",
+            "type": "stat",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "sum(max by (pod) (kube_pod_status_ready{namespace=\"argo-rollouts\",pod=~\"{{ $releaseName }}-.*\",condition=\"true\"}))",
+                "refId": "A"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 }
+          },
+          {
+            "id": 6,
             "title": "Container Restarts",
             "type": "stat",
             "datasource": {
@@ -95,23 +112,7 @@ data:
             },
             "targets": [
               {
-                "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"argo-rollouts\"})",
-                "refId": "A"
-              }
-            ],
-            "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 }
-          },
-          {
-            "id": 6,
-            "title": "Ready Containers",
-            "type": "stat",
-            "datasource": {
-              "type": "prometheus",
-              "uid": "prometheus"
-            },
-            "targets": [
-              {
-                "expr": "sum(kube_pod_container_status_ready{namespace=\"argo-rollouts\"} == 1)",
+                "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"argo-rollouts\",pod=~\"{{ $releaseName }}-.*\"})",
                 "refId": "A"
               }
             ],
@@ -127,7 +128,7 @@ data:
             },
             "targets": [
               {
-                "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"argo-rollouts\",container!=\"\",image!=\"\"})",
+                "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"argo-rollouts\",pod=~\"{{ $releaseName }}-.*\"})",
                 "legendFormat": "{{`{{pod}}`}}",
                 "refId": "A"
               }
@@ -144,7 +145,7 @@ data:
             },
             "targets": [
               {
-                "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"argo-rollouts\",container!=\"\",image!=\"\"}[2m]))",
+                "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"argo-rollouts\",pod=~\"{{ $releaseName }}-.*\"}[2m]))",
                 "legendFormat": "{{`{{pod}}`}}",
                 "refId": "A"
               }
@@ -161,8 +162,8 @@ data:
             },
             "targets": [
               {
-                "expr": "up{namespace=\"argo-rollouts\"}",
-                "legendFormat": "{{`{{job}} {{pod}}`}}",
+                "expr": "up{job=\"monitoring/{{ $releaseName }}\"}",
+                "legendFormat": "{{`{{pod}}`}}",
                 "refId": "A"
               }
             ],
