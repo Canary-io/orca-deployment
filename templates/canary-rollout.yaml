@@ -89,7 +89,7 @@ metadata:
   name: {{ include "service-chart.name" . }}
   namespace: monitoring
   labels:
-    release: prometheus
+    release: prometheus-stack
 spec:
   namespaceSelector:
     matchNames:

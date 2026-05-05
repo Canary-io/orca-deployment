@@ -5,5 +5,5 @@ Application URL: http://{{ include "service-chart.ingressHost" . }}
 Metrics URL: http://{{ include "service-chart.metricsHost" . }}{{ .Values.metrics.path }}
 {{- end }}
 {{- if .Values.grafanaDashboard.ingress.enabled }}
-Grafana URL: http://{{ include "service-chart.grafanaHost" . }}/d/{{ include "service-chart.grafanaDashboardUid" . }}/{{ include "service-chart.grafanaDashboardUid" . }}
+Grafana URL: http://{{ include "service-chart.grafanaHost" . }}/d/{{ include "service-chart.grafanaDashboardUid" . }}/{{ include "service-chart.grafanaDashboardSlug" . }}
 {{- end }}

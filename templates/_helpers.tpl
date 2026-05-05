@@ -57,6 +57,10 @@
 {{- printf "%s-dashboard" (include "service-chart.name" .) | trunc 40 | trimSuffix "-" -}}
 {{- end }}
 
+{{- define "service-chart.grafanaDashboardSlug" -}}
+{{- printf "%s-metrics" .Values.image.name | lower | replace " " "-" | replace "_" "-" | trunc 40 | trimSuffix "-" -}}
+{{- end }}
+
 {{- define "service-chart.shouldCreateGrafanaIngress" -}}
 {{- if and .Values.grafanaDashboard.enabled .Values.grafanaDashboard.ingress.enabled -}}
 true
