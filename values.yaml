@@ -61,14 +61,14 @@ grafanaDashboard:
     path: /
     annotations: {}
   service:
-    name: prometheus-grafana
+    name: prometheus-stack-grafana
     namespace: monitoring
     port: 80
 
 grafanaImportJob:
   enabled: true
   namespace: monitoring
-  grafanaUrl: http://prometheus-grafana.monitoring.svc.cluster.local
+  grafanaUrl: http://prometheus-stack-grafana.monitoring.svc.cluster.local
   credentialsSecret:
     create: true
     name: grafana-import-credentials
