@@ -72,7 +72,7 @@ grafanaImportJob:
   credentialsSecret:
     create: false
     name: grafana-import-credentials
-    usernameKey: username
-    passwordKey: password
+    usernameKey: admin-user
+    passwordKey: admin-password
     username: admin
     password: ""
