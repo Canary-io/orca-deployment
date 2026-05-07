@@ -17,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ include "service-chart.name" . }}-stable
+            name: {{ if .Values.rollout.bluegreen.enabled }}{{ include "service-chart.name" . }}-active{{ else }}{{ include "service-chart.name" . }}-stable{{ end }}
             port:
               number: 80
