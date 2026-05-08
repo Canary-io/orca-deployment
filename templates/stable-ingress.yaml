@@ -1,0 +1,29 @@
+{{- if and .Values.rollout.canary.enabled .Values.rollout.canary.stableIngress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "service-chart.name" . }}-stable-ingress
+  namespace: argo-rollouts
+  {{- if or .Values.ingress.annotations .Values.rollout.canary.stableIngress.annotations }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.rollout.canary.stableIngress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ include "service-chart.stableHost" . }}
+      http:
+        paths:
+          - path: {{ .Values.rollout.canary.stableIngress.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "service-chart.stableServiceName" . }}
+                port:
+                  number: 80
+{{- end }}

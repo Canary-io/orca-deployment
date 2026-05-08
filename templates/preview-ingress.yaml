@@ -1,0 +1,29 @@
+{{- if and .Values.rollout.bluegreen.enabled .Values.rollout.bluegreen.previewIngress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "service-chart.name" . }}-preview-ingress
+  namespace: argo-rollouts
+  {{- if or .Values.ingress.annotations .Values.rollout.bluegreen.previewIngress.annotations }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.rollout.bluegreen.previewIngress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ include "service-chart.previewHost" . }}
+      http:
+        paths:
+          - path: {{ .Values.rollout.bluegreen.previewIngress.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "service-chart.name" . }}-preview
+                port:
+                  number: 80
+{{- end }}

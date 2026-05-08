@@ -37,6 +37,38 @@
 {{- end -}}
 {{- end }}
 
+{{- define "service-chart.stableHost" -}}
+{{- if .Values.rollout.canary.stableIngress.host -}}
+{{- .Values.rollout.canary.stableIngress.host -}}
+{{- else -}}
+{{- printf "%s-stable.%s" (include "service-chart.name" .) .Values.ingress.domain -}}
+{{- end -}}
+{{- end }}
+
+{{- define "service-chart.canaryHost" -}}
+{{- if .Values.rollout.canary.canaryIngress.host -}}
+{{- .Values.rollout.canary.canaryIngress.host -}}
+{{- else -}}
+{{- printf "%s-canary.%s" (include "service-chart.name" .) .Values.ingress.domain -}}
+{{- end -}}
+{{- end }}
+
+{{- define "service-chart.activeHost" -}}
+{{- if .Values.rollout.bluegreen.activeIngress.host -}}
+{{- .Values.rollout.bluegreen.activeIngress.host -}}
+{{- else -}}
+{{- printf "%s-active.%s" (include "service-chart.name" .) .Values.ingress.domain -}}
+{{- end -}}
+{{- end }}
+
+{{- define "service-chart.previewHost" -}}
+{{- if .Values.rollout.bluegreen.previewIngress.host -}}
+{{- .Values.rollout.bluegreen.previewIngress.host -}}
+{{- else -}}
+{{- printf "%s-preview.%s" (include "service-chart.name" .) .Values.ingress.domain -}}
+{{- end -}}
+{{- end }}
+
 {{- define "service-chart.metricsHost" -}}
 {{- if .Values.metrics.host -}}
 {{- .Values.metrics.host -}}

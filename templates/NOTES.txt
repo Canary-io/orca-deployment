@@ -1,6 +1,18 @@
 Congratulations your release has been deployed!
 
 Application URL: http://{{ include "service-chart.ingressHost" . }}
+{{- if and .Values.rollout.canary.enabled .Values.rollout.canary.stableIngress.enabled }}
+Stable URL: http://{{ include "service-chart.stableHost" . }}
+{{- end }}
+{{- if and .Values.rollout.canary.enabled .Values.rollout.canary.canaryIngress.enabled }}
+Canary URL: http://{{ include "service-chart.canaryHost" . }}
+{{- end }}
+{{- if and .Values.rollout.bluegreen.enabled .Values.rollout.bluegreen.activeIngress.enabled }}
+Active URL: http://{{ include "service-chart.activeHost" . }}
+{{- end }}
+{{- if and .Values.rollout.bluegreen.enabled .Values.rollout.bluegreen.previewIngress.enabled }}
+Preview URL: http://{{ include "service-chart.previewHost" . }}
+{{- end }}
 {{- if .Values.metrics.enabled }}
 Metrics URL: http://{{ include "service-chart.metricsHost" . }}{{ .Values.metrics.path }}
 {{- end }}

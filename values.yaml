@@ -45,8 +45,28 @@ rollout:
     analysis:
       enabled: false
     steps: [25, 40, 75, 100]
+    stableIngress:
+      enabled: true
+      host: ""
+      path: /
+      annotations: {}
+    canaryIngress:
+      enabled: true
+      host: ""
+      path: /
+      annotations: {}
   bluegreen:
     enabled: false
+    activeIngress:
+      enabled: true
+      host: ""
+      path: /
+      annotations: {}
+    previewIngress:
+      enabled: true
+      host: ""
+      path: /
+      annotations: {}
 
 grafanaDashboard:
   enabled: true
