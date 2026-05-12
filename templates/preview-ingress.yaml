@@ -4,8 +4,9 @@ kind: Ingress
 metadata:
   name: {{ include "service-chart.name" . }}-preview-ingress
   namespace: argo-rollouts
-  {{- if or .Values.ingress.annotations .Values.rollout.bluegreen.previewIngress.annotations }}
+  {{- if or .Values.ingress.annotations .Values.rollout.bluegreen.previewIngress.annotations .Values.ingress.className }}
   annotations:
+    {{- include "service-chart.ingressClassAnnotation" . | nindent 4 }}
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

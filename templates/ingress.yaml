@@ -3,9 +3,12 @@ kind: Ingress
 metadata:
   name: {{ include "service-chart.name" . }}-ingress
   namespace: argo-rollouts
-  {{- with .Values.ingress.annotations }}
+  {{- if or .Values.ingress.annotations .Values.ingress.className }}
   annotations:
+    {{- include "service-chart.ingressClassAnnotation" . | nindent 4 }}
+    {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
+    {{- end }}
   {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}

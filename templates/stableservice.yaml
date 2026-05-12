@@ -1,4 +1,4 @@
-{{- if .Values.rollout.canary.enabled -}}
+{{- if not .Values.rollout.bluegreen.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:

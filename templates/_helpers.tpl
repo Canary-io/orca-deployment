@@ -101,6 +101,12 @@ false
 {{- end -}}
 {{- end }}
 
+{{- define "service-chart.ingressClassAnnotation" -}}
+{{- if .Values.ingress.className -}}
+kubernetes.io/ingress.class: {{ .Values.ingress.className | quote }}
+{{- end -}}
+{{- end }}
+
 {{- define "service-chart.labels" -}}
 helm.sh/chart: {{ include "service-chart.chart" . }}
 {{ include "service-chart.selectorLabels" . }}

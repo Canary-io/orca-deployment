@@ -1,4 +1,4 @@
-{{- if and .Values.metrics.enabled (or .Values.rollout.canary.enabled .Values.rollout.bluegreen.enabled) -}}
+{{- if .Values.metrics.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,11 +11,11 @@ spec:
     app: {{ include "service-chart.name" . }}
   ports:
     - name: metrics
-      {{- if .Values.rollout.canary.enabled }}
-      port: 9114
-      targetPort: metrics
-      {{- else if .Values.rollout.bluegreen.enabled }}
+      {{- if .Values.rollout.bluegreen.enabled }}
       port: 8080
       targetPort: 8080
+      {{- else }}
+      port: 9114
+      targetPort: metrics
       {{- end }}
 {{- end }}

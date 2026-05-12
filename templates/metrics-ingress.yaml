@@ -1,11 +1,12 @@
-{{- if and .Values.metrics.enabled (or .Values.rollout.canary.enabled .Values.rollout.bluegreen.enabled) -}}
+{{- if .Values.metrics.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "service-chart.name" . }}-metrics-ingress
   namespace: argo-rollouts
-  {{- if or .Values.ingress.annotations .Values.metrics.annotations }}
+  {{- if or .Values.ingress.annotations .Values.metrics.annotations .Values.ingress.className }}
   annotations:
+    {{- include "service-chart.ingressClassAnnotation" . | nindent 4 }}
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

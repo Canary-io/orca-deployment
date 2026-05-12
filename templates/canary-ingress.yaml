@@ -4,8 +4,9 @@ kind: Ingress
 metadata:
   name: {{ include "service-chart.name" . }}-canary-ingress
   namespace: argo-rollouts
-  {{- if or .Values.ingress.annotations .Values.rollout.canary.canaryIngress.annotations }}
+  {{- if or .Values.ingress.annotations .Values.rollout.canary.canaryIngress.annotations .Values.ingress.className }}
   annotations:
+    {{- include "service-chart.ingressClassAnnotation" . | nindent 4 }}
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
