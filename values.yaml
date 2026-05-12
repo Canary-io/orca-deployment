@@ -45,6 +45,10 @@ rollout:
     analysis:
       enabled: false
     steps: [25, 40, 75, 100]
+    nginx:
+      annotationPrefix: ""
+      additionalIngressAnnotations: {}
+      canaryIngressAnnotations: {}
     stableIngress:
       enabled: true
       host: ""

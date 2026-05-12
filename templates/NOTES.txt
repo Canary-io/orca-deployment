@@ -7,6 +7,11 @@ Stable URL: http://{{ include "service-chart.stableHost" . }}
 {{- if and .Values.rollout.canary.enabled .Values.rollout.canary.canaryIngress.enabled }}
 Canary URL: http://{{ include "service-chart.canaryHost" . }}
 {{- end }}
+{{- with .Values.rollout.canary.nginx.additionalIngressAnnotations }}
+{{- if and (index . "canary-by-header") (index . "canary-by-header-value") }}
+Header Canary Test: send {{ index . "canary-by-header" }}={{ index . "canary-by-header-value" }} to {{ include "service-chart.ingressHost" $ }}
+{{- end }}
+{{- end }}
 {{- if and .Values.rollout.bluegreen.enabled .Values.rollout.bluegreen.activeIngress.enabled }}
 Active URL: http://{{ include "service-chart.activeHost" . }}
 {{- end }}
