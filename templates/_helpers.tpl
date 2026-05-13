@@ -45,14 +45,6 @@
 {{- end -}}
 {{- end }}
 
-{{- define "service-chart.canaryHost" -}}
-{{- if .Values.rollout.canary.canaryIngress.host -}}
-{{- .Values.rollout.canary.canaryIngress.host -}}
-{{- else -}}
-{{- printf "%s-canary.%s" (include "service-chart.name" .) .Values.ingress.domain -}}
-{{- end -}}
-{{- end }}
-
 {{- define "service-chart.activeHost" -}}
 {{- if .Values.rollout.bluegreen.activeIngress.host -}}
 {{- .Values.rollout.bluegreen.activeIngress.host -}}

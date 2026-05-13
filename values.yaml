@@ -54,11 +54,6 @@ rollout:
       host: ""
       path: /
       annotations: {}
-    canaryIngress:
-      enabled: true
-      host: ""
-      path: /
-      annotations: {}
   bluegreen:
     enabled: false
     activeIngress:

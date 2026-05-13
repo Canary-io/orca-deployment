@@ -4,9 +4,6 @@ Application URL: http://{{ include "service-chart.ingressHost" . }}
 {{- if and .Values.rollout.canary.enabled .Values.rollout.canary.stableIngress.enabled }}
 Stable URL: http://{{ include "service-chart.stableHost" . }}
 {{- end }}
-{{- if and .Values.rollout.canary.enabled .Values.rollout.canary.canaryIngress.enabled }}
-Canary URL: http://{{ include "service-chart.canaryHost" . }}
-{{- end }}
 {{- with .Values.rollout.canary.nginx.additionalIngressAnnotations }}
 {{- if and (index . "canary-by-header") (index . "canary-by-header-value") }}
 Header Canary Test: send {{ index . "canary-by-header" }}={{ index . "canary-by-header-value" }} to {{ include "service-chart.ingressHost" $ }}
